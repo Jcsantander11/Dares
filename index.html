@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a12" />
+<title>Verdad o Reto 🔥 Pro</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --accent:#6366f1; --accent2:#8b5cf6; --glow1:rgba(99,102,241,.40); --glow2:rgba(139,92,246,.28); }
+  body[data-mode="amigos"]{ --accent:#3b82f6; --accent2:#facc15; --glow1:rgba(59,130,246,.45); --glow2:rgba(250,204,21,.25); }
+  body[data-mode="pareja"]{ --accent:#ec4899; --accent2:#fb7185; --glow1:rgba(236,72,153,.45); --glow2:rgba(251,113,133,.28); }
+  body[data-mode="hot"]{ --accent:#ef4444; --accent2:#f97316; --glow1:rgba(239,68,68,.45); --glow2:rgba(249,115,22,.30); }
+  body[data-mode="sex"]{ --accent:#8b5cf6; --accent2:#312e81; --glow1:rgba(139,92,246,.45); --glow2:rgba(49,46,129,.55); }
+  *{ -webkit-tap-highlight-color: transparent; }
+  html,body{ height:100%; }
+  body{ font-family:'Outfit',system-ui,sans-serif; background:#0a0a12; color:#f5f5fa; overscroll-behavior:none; }
+  body::before{ content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background: radial-gradient(circle at 15% -10%, var(--glow1), transparent 55%), radial-gradient(circle at 90% 105%, var(--glow2), transparent 55%);
+    transition: background .6s ease; }
+  .screen{ position:relative; z-index:1; min-height:100dvh; display:flex; flex-direction:column; }
+  .screen.hidden{ display:none !important; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:none;} }
+  .fade-up{ animation: fadeUp .38s cubic-bezier(.2,.8,.3,1) both; }
+  @keyframes cardIn{ from{opacity:0; transform:translateY(46px) scale(.93);} to{opacity:1; transform:none;} }
+  .card-in{ animation: cardIn .42s cubic-bezier(.2,.9,.3,1.15) both; }
+  @keyframes popIn{ from{opacity:0; transform:scale(.9);} to{opacity:1; transform:scale(1);} }
+  .pop-in{ animation: popIn .3s ease both; }
+  @keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+  .shake{ animation: shake .35s ease; }
+  @keyframes floatY{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+  .float-y{ animation: floatY 3.5s ease-in-out infinite; }
+  @keyframes pulseGlow{ 0%,100%{ box-shadow:0 0 0 0 rgba(139,92,246,.4), 0 20px 50px -20px rgba(139,92,246,.9);} 50%{ box-shadow:0 0 0 18px rgba(139,92,246,0), 0 20px 50px -20px rgba(139,92,246,.9);} }
+  .pulse-glow{ animation: pulseGlow 2.4s ease-in-out infinite; }
+  @keyframes shimmer{ 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
+  .shimmer{ background:linear-gradient(90deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,.1) 100%); background-size:200% 100%; animation: shimmer 3s linear infinite; }
+  .press{ transition: transform .12s ease, filter .2s ease; }
+  .press:active{ transform: scale(.96); filter: brightness(1.08); }
+  .glass{ background: rgba(255,255,255,.06); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border:1px solid rgba(255,255,255,.10); }
+  input::placeholder{ color: rgba(255,255,255,.35); }
+  input:focus{ outline:none; }
+  ::-webkit-scrollbar{ width:0; }
+  .chip{ padding:8px 13px; border-radius:999px; font-size:12.5px; font-weight:700; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); color:rgba(255,255,255,.75); transition: all .2s ease; }
+  .chip.active{ background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#000; border-color:transparent; box-shadow:0 6px 20px -8px var(--accent); }
+  .wc{ flex:1; min-width:0; padding:9px 6px; border-radius:14px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); display:flex; flex-direction:column; align-items:center; gap:2px; font-size:10.5px; font-weight:800; letter-spacing:.02em; transition: all .15s ease; }
+  .wc:active{ transform:scale(.95); }
+  .wc .wc-icon{ font-size:16px; } .wc .wc-count{ font-size:10px; opacity:.55; font-weight:700; }
+  .wc:disabled{ opacity:.3; }
+  .timer-ring{ transition: stroke-dashoffset .5s linear; }
+
+  /* Start screen decorations */
+  .hero-emoji{ filter: drop-shadow(0 20px 40px rgba(139,92,246,.55)); }
+  .mode-preview{ display:flex; gap:8px; }
+  .mode-dot{ width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 8px 20px -8px rgba(0,0,0,.6); }
+</style>
+</head>
+<body data-mode="">
+
+<!-- ══════════════════ PANTALLA 0 · INICIO (SPLASH) ══════════════════ -->
+<section id="screen-start" class="screen">
+  <div class="flex-1 flex flex-col items-center justify-center px-6 text-center relative">
+    <div class="fade-up" style="animation-delay:.05s">
+      <div class="text-[88px] leading-none mb-3 float-y hero-emoji">🎭</div>
+    </div>
+    <h1 class="fade-up text-[2.6rem] font-black tracking-tight leading-none" style="animation-delay:.15s">
+      Verdad <span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;">o</span> Reto
+    </h1>
+    <p class="fade-up text-white/55 text-sm mt-3 max-w-xs" style="animation-delay:.25s">
+      El juego de fiesta definitivo. 800 retos y verdades en 4 modos.
+    </p>
+
+    <!-- Preview de modos -->
+    <div class="fade-up mt-8" style="animation-delay:.35s">
+      <p class="text-[10px] uppercase tracking-[0.35em] text-white/30 mb-3 font-black">Modos incluidos</p>
+      <div class="mode-preview justify-center flex-wrap">
+        <div class="mode-dot" style="background:linear-gradient(135deg,#3b82f6,#facc15);" title="Amigos">🎉</div>
+        <div class="mode-dot" style="background:linear-gradient(135deg,#ec4899,#fb7185);" title="Pareja">💞</div>
+        <div class="mode-dot" style="background:linear-gradient(135deg,#dc2626,#f97316);" title="Hot">🔥</div>
+        <div class="mode-dot" style="background:linear-gradient(135deg,#7c3aed,#1e1b4b);" title="Sex">😈</div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="fade-up grid grid-cols-2 gap-2.5 mt-9 w-full max-w-xs" style="animation-delay:.45s">
+      <div class="glass rounded-2xl p-3 text-left">
+        <div class="text-lg">🎯</div>
+        <p class="text-[11px] font-black mt-0.5">4 modos</p>
+        <p class="text-[10px] text-white/40 leading-tight">Amigos, Pareja, Hot y Sex</p>
+      </div>
+      <div class="glass rounded-2xl p-3 text-left">
+        <div class="text-lg">🃏</div>
+        <p class="text-[11px] font-black mt-0.5">800 cartas</p>
+        <p class="text-[10px] text-white/40 leading-tight">Sin repeticiones</p>
+      </div>
+      <div class="glass rounded-2xl p-3 text-left">
+        <div class="text-lg">🎲</div>
+        <p class="text-[11px] font-black mt-0.5">Comodines</p>
+        <p class="text-[10px] text-white/40 leading-tight">Pasar, obligar, cambiar</p>
+      </div>
+      <div class="glass rounded-2xl p-3 text-left">
+        <div class="text-lg">⏱️</div>
+        <p class="text-[11px] font-black mt-0.5">Temporizador</p>
+        <p class="text-[10px] text-white/40 leading-tight">60 s por carta</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 pb-8">
+    <button id="btn-start" class="press pulse-glow w-full h-16 rounded-3xl font-black text-lg text-black"
+      style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
+      🎮 COMENZAR
+    </button>
+    <p class="text-center text-white/25 text-[10px] mt-4 uppercase tracking-[0.25em] font-black">
+      +18 en modos Hot y Sex
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════ PANTALLA 1 · JUGADORES ══════════════════ -->
+<section id="screen-players" class="screen hidden">
+  <header class="px-6 pt-10 pb-1 text-center fade-up">
+    <div class="text-5xl mb-2">🎭</div>
+    <h1 class="text-3xl font-black tracking-tight">Verdad o Reto</h1>
+    <p class="text-white/50 text-xs mt-1.5">Agrega al menos 2 jugadores para empezar</p>
+  </header>
+  <div class="px-5 mt-5 fade-up">
+    <div class="flex gap-2">
+      <input id="input-player" type="text" maxlength="16" placeholder="Nombre del jugador"
+        class="flex-1 glass rounded-2xl px-4 py-3.5 text-base text-white placeholder-white/35" />
+      <button id="btn-add" class="press w-14 rounded-2xl font-black text-2xl text-black"
+        style="background:linear-gradient(135deg,var(--accent),var(--accent2));">+</button>
+    </div>
+  </div>
+  <div id="players-list" class="px-5 mt-4 space-y-2.5"></div>
+  <p id="players-empty" class="text-center text-white/25 text-sm mt-8">Aún no hay jugadores 👀</p>
+  <div class="px-5 mt-7 fade-up">
+    <p class="text-[10px] uppercase tracking-[0.25em] text-white/40 mb-2 font-black">Castigo al negarse</p>
+    <div id="punishment-chips" class="flex flex-wrap gap-2">
+      <button data-pun="trago" class="chip press">🍺 Beber un trago</button>
+      <button data-pun="prenda" class="chip press">👕 Quitarse una prenda</button>
+      <button data-pun="puntos" class="chip press">➖ Restar 1 punto</button>
+      <button data-pun="ninguno" class="chip press">🚫 Sin castigo</button>
+    </div>
+  </div>
+  <div class="px-5 mt-5 fade-up">
+    <p class="text-[10px] uppercase tracking-[0.25em] text-white/40 mb-2 font-black">Comodines por jugador</p>
+    <div id="wildcard-chips" class="flex flex-wrap gap-2">
+      <button data-wc="2" class="chip press">2 comodines</button>
+      <button data-wc="3" class="chip press">3 comodines</button>
+      <button data-wc="0" class="chip press">Sin comodines</button>
+    </div>
+  </div>
+  <div class="flex-1 min-h-[30px]"></div>
+  <div class="sticky bottom-0 p-5 pt-8" style="background:linear-gradient(to top,#0a0a12 45%,transparent);">
+    <button id="btn-to-modes" disabled
+      class="press w-full rounded-2xl font-bold text-lg text-black disabled:opacity-30 h-14"
+      style="background:linear-gradient(135deg,var(--accent),var(--accent2));">Elegir modo de juego →</button>
+  </div>
+</section>
+
+<!-- ══════════════════ PANTALLA 2 · MODOS ══════════════════ -->
+<section id="screen-modes" class="screen hidden">
+  <header class="px-5 pt-7 flex items-center gap-3">
+    <button id="btn-back-players" class="press w-11 h-11 rounded-full glass flex items-center justify-center text-lg">←</button>
+    <div>
+      <h2 class="text-2xl font-black leading-none">Elige el modo</h2>
+      <p class="text-white/40 text-xs mt-1">100 verdades + 100 retos por modo</p>
+    </div>
+  </header>
+  <div id="modes-list" class="px-5 mt-6 space-y-3.5 pb-10"></div>
+</section>
+
+<!-- ══════════════════ PANTALLA 3 · JUEGO ══════════════════ -->
+<section id="screen-game" class="screen hidden">
+  <header class="px-4 pt-5 flex items-center justify-between gap-2">
+    <button id="btn-back-modes" class="press w-10 h-10 rounded-full glass flex items-center justify-center text-base">←</button>
+    <div id="mode-badge" class="px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.18em] glass"></div>
+    <div class="flex gap-2">
+      <button id="btn-settings" class="press w-10 h-10 rounded-full glass flex items-center justify-center text-base">⚙️</button>
+      <button id="btn-reset" class="press w-10 h-10 rounded-full glass flex items-center justify-center text-base">⟳</button>
+    </div>
+  </header>
+  <div id="scoreboard" class="px-5 mt-4 flex gap-2 overflow-x-auto pb-1"></div>
+  <div class="flex-1 flex flex-col items-center justify-center px-6 text-center pt-2">
+    <p class="text-white/40 uppercase tracking-[0.35em] text-[11px] font-semibold">Turno de</p>
+    <h2 id="current-player" class="text-[2.4rem] leading-tight font-black mt-2 break-words"></h2>
+    <div id="players-dots" class="flex flex-wrap gap-2.5 justify-center mt-5"></div>
+    <p id="deck-counter" class="text-white/30 text-xs mt-5"></p>
+  </div>
+  <div id="wildcard-bar" class="px-5 pb-2 flex gap-2"></div>
+  <div class="px-5 pb-6 space-y-3">
+    <button id="btn-verdad" class="press w-full h-[88px] rounded-3xl font-black text-lg flex items-center justify-center gap-3 text-white shadow-2xl"
+      style="background:linear-gradient(135deg,#0ea5e9,#2563eb); box-shadow:0 12px 40px -12px rgba(37,99,235,.9);">
+      <span class="text-2xl">💬</span> VERDAD
+    </button>
+    <button id="btn-reto" class="press w-full h-[88px] rounded-3xl font-black text-lg flex items-center justify-center gap-3 text-white shadow-2xl"
+      style="background:linear-gradient(135deg,#f43f5e,#f97316); box-shadow:0 12px 40px -12px rgba(244,63,94,.9);">
+      <span class="text-2xl">🔥</span> RETO
+    </button>
+  </div>
+</section>
+
+<!-- ══════════════════ OVERLAY · TARJETA ══════════════════ -->
+<div id="card-overlay" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/75" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-5 overflow-y-auto">
+    <div id="card" class="card-in w-full max-w-md rounded-[2rem] p-6 text-center glass relative overflow-hidden my-4">
+      <div id="card-glow" class="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl opacity-40 pointer-events-none"></div>
+      <div class="relative">
+        <div class="flex items-center justify-between mb-3">
+          <div id="card-type" class="inline-block px-3.5 py-1.5 rounded-full text-[10.5px] font-black uppercase tracking-[0.2em]"></div>
+          <button id="btn-timer" class="press w-9 h-9 rounded-full glass flex items-center justify-center text-sm">⏱️</button>
+        </div>
+        <div id="timer-wrap" class="hidden items-center justify-center mb-3">
+          <div class="relative w-14 h-14">
+            <svg class="w-14 h-14 -rotate-90" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="3"/>
+              <circle id="timer-ring" class="timer-ring" cx="18" cy="18" r="15" fill="none"
+                stroke="url(#tg)" stroke-width="3" stroke-linecap="round"
+                stroke-dasharray="94.2" stroke-dashoffset="0"/>
+              <defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#f43f5e"/><stop offset="1" stop-color="#f97316"/>
+              </linearGradient></defs>
+            </svg>
+            <span id="timer-text" class="absolute inset-0 flex items-center justify-center font-black text-sm">60</span>
+          </div>
+        </div>
+        <p id="card-text" class="text-[1.35rem] leading-snug font-semibold my-6"></p>
+        <div class="space-y-2.5">
+          <button id="btn-done" class="press w-full py-3.5 rounded-2xl font-black text-base text-black"
+            style="background:linear-gradient(135deg,#22c55e,#16a34a);">✅ ¡Cumplido! (+1)</button>
+          <button id="btn-refuse" class="press w-full py-3.5 rounded-2xl font-bold text-base text-white bg-red-500/20 border border-red-500/40">
+            😤 Me niego (castigo)
+          </button>
+          <button id="btn-switch-wc" class="press w-full py-3 rounded-2xl font-bold text-sm text-white/70 bg-white/5 border border-white/10 flex items-center justify-center gap-2">
+            <span>🔄</span> <span id="switch-label">Cambiar tipo</span>
+            <span id="switch-count" class="text-[10px] opacity-60 font-black"></span>
+          </button>
+        </div>
+        <p id="card-hint" class="text-white/35 text-[11px] mt-3.5"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ OVERLAY · INTENSIDAD ══════════════════ -->
+<div id="intensity-overlay" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/80" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-5">
+    <div class="card-in w-full max-w-sm rounded-3xl p-6 glass text-center">
+      <div class="text-4xl mb-2">🌡️</div>
+      <h3 class="text-2xl font-black mb-1">Intensidad</h3>
+      <p class="text-white/55 text-sm mb-5">Modo <span id="intensity-mode-name" class="font-bold text-white"></span></p>
+      <div class="space-y-2.5">
+        <button data-int="1" class="press w-full py-3.5 rounded-2xl font-bold text-sm text-left px-4 bg-white/5 border border-white/10"><span class="text-lg mr-2">🌶️</span> Nivel 1 — Picante pero tranquilo</button>
+        <button data-int="2" class="press w-full py-3.5 rounded-2xl font-bold text-sm text-left px-4 bg-white/5 border border-white/10"><span class="text-lg mr-2">🔥</span> Nivel 2 — Subiendo la temperatura</button>
+        <button data-int="3" class="press w-full py-3.5 rounded-2xl font-bold text-sm text-left px-4 bg-white/5 border border-white/10"><span class="text-lg mr-2">💥</span> Nivel 3 — Sin censura</button>
+      </div>
+      <button id="intensity-cancel" class="mt-4 text-white/40 text-sm font-semibold">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ OVERLAY · OBLIGAR ══════════════════ -->
+<div id="force-overlay" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/80" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-5">
+    <div class="card-in w-full max-w-sm rounded-3xl p-6 glass">
+      <h3 class="text-xl font-black mb-1 text-center">🎯 Obligar a otro</h3>
+      <p class="text-white/50 text-xs text-center mb-4">Elige quién tomará tu turno</p>
+      <div id="force-list" class="space-y-2 max-h-[50vh] overflow-y-auto"></div>
+      <button id="force-cancel" class="press mt-4 w-full py-3 rounded-2xl font-semibold text-white/50 text-sm bg-white/5">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ OVERLAY · CASTIGO ══════════════════ -->
+<div id="punishment-overlay" class="fixed inset-0 z-[60] hidden">
+  <div class="absolute inset-0 bg-black/85" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-5">
+    <div class="card-in w-full max-w-sm rounded-3xl p-7 glass text-center shake">
+      <div class="text-6xl mb-3" id="pun-emoji">😤</div>
+      <h3 class="text-2xl font-black mb-2">¡Castigo!</h3>
+      <p class="text-white/70 text-base mb-6" id="punishment-text"></p>
+      <button id="punishment-ok" class="press w-full py-3.5 rounded-2xl font-black text-black"
+        style="background:linear-gradient(135deg,var(--accent),var(--accent2));">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ OVERLAY · CONFIRMAR REINICIO ══════════════════ -->
+<div id="reset-overlay" class="fixed inset-0 z-[65] hidden">
+  <div class="absolute inset-0 bg-black/85" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-5">
+    <div class="card-in w-full max-w-sm rounded-3xl p-6 glass text-center">
+      <div class="text-5xl mb-3">🔄</div>
+      <h3 class="text-xl font-black mb-1">¿Reiniciar partida?</h3>
+      <p class="text-white/55 text-sm mb-6">
+        Se reiniciarán los <span class="text-white font-bold">mazos</span>,
+        los <span class="text-white font-bold">comodines</span>,
+        los <span class="text-white font-bold">turnos</span> y el
+        <span class="text-white font-bold">puntaje</span> de todos los jugadores.
+      </p>
+      <div class="space-y-2.5">
+        <button id="reset-confirm" class="press w-full py-3.5 rounded-2xl font-black text-black"
+          style="background:linear-gradient(135deg,#f43f5e,#f97316);">Sí, reiniciar todo</button>
+        <button id="reset-cancel" class="press w-full py-3 rounded-2xl font-bold text-white/60 bg-white/5 border border-white/10">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ OVERLAY · AJUSTES ══════════════════ -->
+<div id="settings-overlay" class="fixed inset-0 z-[55] hidden">
+  <div class="absolute inset-0 bg-black/80" style="backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-5">
+    <div class="card-in w-full max-w-sm rounded-3xl p-6 glass">
+      <h3 class="text-xl font-black mb-5 text-center">⚙️ Ajustes</h3>
+      <div class="space-y-3">
+        <label class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+          <span class="font-semibold text-sm">🔊 Sonidos</span>
+          <input id="set-sound" type="checkbox" class="w-5 h-5 accent-purple-500" />
+        </label>
+        <label class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+          <span class="font-semibold text-sm">📳 Vibración</span>
+          <input id="set-vibe" type="checkbox" class="w-5 h-5 accent-purple-500" />
+        </label>
+        <label class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+          <span class="font-semibold text-sm">💡 Mantener pantalla activa</span>
+          <input id="set-wake" type="checkbox" class="w-5 h-5 accent-purple-500" />
+        </label>
+      </div>
+      <button id="settings-close" class="press mt-5 w-full py-3.5 rounded-2xl font-bold text-black"
+        style="background:linear-gradient(135deg,var(--accent),var(--accent2));">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[70] px-5 py-3 rounded-2xl glass text-sm font-semibold opacity-0 pointer-events-none transition-opacity duration-300 max-w-[90vw] text-center"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   BASE DE DATOS · 800 PROMPTS (100 verdades + 100 retos × 4 modos)
+   ══════════════════════════════════════════════════════════════════ */
+const DATA = {
+  amigos: {
+    verdades: [
+      "¿Cuál es la mentira más grande que le has dicho a tus padres?","¿A quién de los presentes le confiarías un secreto importante?",
+      "¿Cuál ha sido tu momento más vergonzoso en público?","¿Qué es lo más raro que has buscado en internet?",
+      "¿Cuál es tu peor hábito que nadie aquí conoce?","¿Alguna vez has fingido que te gustaba un regalo que odiabas?",
+      "¿Cuál fue la última vez que lloraste y por qué?","¿A quién de este grupo elegirías para sobrevivir en una isla desierta?",
+      "¿Cuál es la cosa más infantil que todavía haces?","¿Qué canción te da vergüenza admitir que te gusta?",
+      "¿Cuál es el rumor más falso que has escuchado sobre ti?","¿Alguna vez has espiado el celular de alguien?",
+      "¿Qué harías si ganaras la lotería mañana?","¿Cuál es tu mayor miedo y por qué?",
+      "¿Cuál ha sido la peor cita que has tenido?","¿Qué es lo más asqueroso que has hecho y que nadie sabe?",
+      "¿Cuánto tiempo pasas realmente en redes sociales al día?","¿Cuál es la foto más vergonzosa que tienes en tu galería?",
+      "¿A quién de aquí le pedirías dinero prestado sin dudar?","¿Cuál es tu talento más inútil?",
+      "¿Alguna vez has mentido para no salir con tus amigos?","¿Qué es lo que más te molesta de tus amigos?",
+      "¿Cuál es tu guilty pleasure más raro?","¿Cuál fue la última persona con la que discutiste y por qué?",
+      "¿Qué es lo primero que harías si pudieras ser invisible por un día?","¿Cuál es la cosa más cara que has roto?",
+      "¿Cuál es tu apodo más ridículo y cómo surgió?","¿Qué persona famosa te cae mal sin ninguna razón?",
+      "¿Cuál es el peor consejo que has dado?","¿Alguna vez te han pillado cantando o bailando a solas?",
+      "¿Cuál es tu mayor inseguridad?","¿Qué es lo que nunca le dirías a tu mejor amigo/a en la cara?",
+      "¿Cuál es la excusa más tonta que has inventado?","¿Qué es lo más impulsivo que has hecho?",
+      "¿Cuántas horas duermes realmente en promedio?","¿Cuál es el secreto más raro que te han contado?",
+      "¿A quién de los presentes elegirías como compañero de cuarto?","¿Cuál es el peor hábito de tus amigos que no soportas?",
+      "¿Alguna vez has fingido estar enfermo para no ir a la escuela o al trabajo?","¿Cuál es tu mayor arrepentimiento?",
+      "¿Qué es lo más loco que has hecho por amor?","¿Cuál es tu comida favorita que a todos les da asco?",
+      "¿Qué aplicación usas más y para qué?","¿Cuál ha sido tu peor corte de pelo?",
+      "¿Qué es lo que más pereza te da hacer?","¿Alguna vez has hablado mal de alguien de este grupo?",
+      "¿Cuál es el sueño más raro que recuerdas?","¿Qué harías si te quedaran 24 horas de vida?",
+      "¿Cuál es la mayor locura que has hecho en una fiesta?","¿Qué es lo que más te gusta de ti mismo?",
+      "¿Qué es lo que más te da pereza hacer en una fiesta?","¿Cuál es el chisme más jugoso que sabes?",
+      "¿Alguna vez has fingido que no viste a alguien para no saludarlo?","¿Qué es lo que más te cuesta admitir de ti mismo?",
+      "¿Cuál es tu red social favorita y por qué?","¿Qué es lo que nunca le contarías a tu familia?",
+      "¿Cuál ha sido el momento más ridículo de tu vida escolar?","¿Alguna vez has llorado viendo una película infantil?",
+      "¿Qué es lo que más te avergüenza de tu pasado?","¿Cuál es tu mayor logro personal?",
+      "¿Qué harías si te encontraras un sobre con mucho dinero?","¿Cuál es la cosa más loca que has hecho estando borracho/a?",
+      "¿A quién de tus amigos le contarías un secreto con más confianza?","¿Qué es lo que más te molesta cuando sales con amigos?",
+      "¿Alguna vez has fingido gustar de algo solo por impresionar a alguien?","¿Cuál es la peor compra que has hecho en tu vida?",
+      "¿Qué es lo que nunca has entendido de las relaciones humanas?","¿Cuál es tu momento más feliz de la última semana?",
+      "¿Qué es lo que más te ha costado aprender?","¿Alguna vez has sentido envidia de algún amigo? ¿Por qué?",
+      "¿Cuál es la cosa más bonita que alguien te ha dicho?","¿Qué te gustaría que tus amigos entendieran de ti?",
+      "¿Cuál es tu mayor distracción cuando deberías estar trabajando?","¿Qué es lo que más te da miedo perder?",
+      "¿Alguna vez has hecho algo ilegal sin que nadie lo supiera?","¿Cuál es tu plan ideal para un fin de semana?",
+      "¿Qué es lo que más te ha marcado en la vida?","¿Cuál es la opinión impopular que tienes?",
+      "¿Alguna vez has mentido en una entrevista de trabajo?","¿Qué es lo que más te cuesta perdonar?",
+      "¿Cuál ha sido el momento en que más te has reído?","¿Qué es lo que te gustaría ser famoso por?",
+      "¿Cuál es la cosa más rara que has hecho por aburrimiento?","¿Alguna vez has tenido un sueño revelador con alguien del grupo?",
+      "¿Qué es lo que más te gusta hacer cuando estás solo?","¿Cuál es tu red flag personal?",
+      "¿Qué es lo que nunca cambiarías de tu personalidad?","¿Cuál es el consejo más valioso que has recibido?",
+      "¿Alguna vez has fingido ser alguien que no eres?","¿Qué es lo que te da más curiosidad de la vida?",
+      "¿Cuál es tu miedo irracional?","¿Qué es lo que más te gustaría aprender este año?",
+      "¿Alguna vez has tenido un crush con alguien de tu trabajo?","¿Cuál es la cosa más absurda por la que has discutido?",
+      "¿Qué es lo que más te ha costado superar?","¿Cuál es tu manera favorita de pasar el tiempo?",
+      "¿Alguna vez has roto una promesa importante?","¿Qué es lo que te hace sentir más orgulloso de ti?"
+    ],
+    retos: [
+      "Imita a alguien del grupo hasta que adivinen quién es.","Habla con acento extranjero durante las próximas 3 rondas.",
+      "Deja que la persona a tu derecha publique un estado en tus redes.","Canta el coro de tu canción favorita a todo volumen.",
+      "Haz 20 sentadillas sin parar.","Manda un mensaje a tu último contacto que diga \"te extraño\".",
+      "Deja que alguien del grupo mire tu galería durante 10 segundos.","Baila sin música durante 30 segundos.",
+      "Haz una imitación de tu mamá o tu papá.","Cuenta un chiste malo y aguanta las burlas sin reírte.",
+      "Publica una selfie fea en tus historias por 5 minutos.","Habla sin usar la letra \"a\" durante dos rondas.",
+      "Deja que el grupo te haga 3 preguntas que debes responder con sinceridad.","Llama a un amigo y cuéntale un chiste sin explicarle por qué.",
+      "Mantén una pose de yoga durante 20 segundos.","Deja que alguien del grupo te haga un peinado loco.",
+      "Escribe tu nombre completo con la mano que no usas normalmente.","Intenta lamerte el codo, con dramatismo incluido.",
+      "Imita a un animal hasta que alguien lo adivine.","Manda un audio cantando a un grupo de WhatsApp.",
+      "Deja que el grupo elija una foto tuya para su estado.","Haz 10 flexiones, aunque sea de rodillas.",
+      "Cuenta una historia inventada y convence a todos por un minuto.","Habla en tercera persona hasta tu próximo turno.",
+      "Deja que alguien te dibuje algo en el brazo con marcador.","Haz una declaración de amor exagerada a un objeto de la habitación.",
+      "Grita \"¡Soy una estrella!\" tan fuerte como puedas.","Baila como si nadie te estuviera viendo durante un minuto.",
+      "Acepta el apodo que el grupo te ponga y úsalo toda la partida.","Cuenta tu momento más vergonzoso sin reírte.",
+      "Haz una mueca y mantenla durante 15 segundos.","Intenta hacer malabares con 3 objetos.",
+      "Canta todo lo que digas durante las próximas 3 rondas.","Improvisa un rap de 4 líneas sobre la persona a tu izquierda.",
+      "Deja que alguien te cambie la foto de perfil por 10 minutos.","Habla susurrando hasta tu próximo turno.",
+      "Imita a un presentador de televisión presentando al grupo.","Aguanta 10 segundos de cosquillas sin reírte.",
+      "Inventa y baila una coreografía de 15 segundos.","Cuenta un secreto leve que nadie del grupo sepa.",
+      "Habla como bebé durante una ronda completa.","Haz un cumplido exagerado a cada persona del grupo.",
+      "Ponte de pie y da un discurso de agradecimiento ficticio.","Deja que el grupo te ponga una penitencia de 10 segundos.",
+      "Imita el sonido de 3 animales diferentes.","Mantén una pose de superhéroe hasta tu próximo turno.",
+      "Deja que alguien te dibuje un bigote con marcador o lápiz labial.","Cuenta los 3 momentos más divertidos de tu vida en 30 segundos.",
+      "Llama a alguien y di solo \"gracias por todo\" y cuelga.","Haz una reverencia y agradece al público imaginario.",
+      "Imita a tu personaje favorito de película por 30 segundos.","Deja que alguien del grupo te escriba un mensaje y lo envíes sin verlo.",
+      "Haz una mini obra de teatro de 20 segundos.","Canta una canción de cuna a alguien del grupo.",
+      "Haz 3 imitaciones seguidas de famosos.","Deja que alguien te maquille sin espejo.",
+      "Habla como pirata durante 3 rondas.","Baila la macarena sin música.",
+      "Haz una declaración dramática de amor a la silla más cercana.","Cuenta un chiste y no te rías tú mismo.",
+      "Ponte un calcetín en cada mano y actúa una escena.","Habla en rima durante tu próximo turno.",
+      "Di 5 cosas que ames de cada persona del grupo en 30 segundos.","Deja que alguien te cuente una historia y haz de mimo.",
+      "Grita \"viva el rock\" y haz un solo de guitarra imaginario.","Imita el acento de otro país durante 2 rondas.",
+      "Haz una pose de yoga y mantenla 30 segundos.","Deja que alguien te pinte las uñas de un color aleatorio.",
+      "Escribe un poema de 4 líneas a alguien del grupo.","Haz 15 saltos de tijera.",
+      "Deja que alguien te ponga un apodo nuevo y úsalo por una ronda.","Baila como un robot durante 20 segundos.",
+      "Haz una imitación de un animal marino.","Cuenta una historia de terror en 20 segundos.",
+      "Haz un beatbox durante 15 segundos.","Habla en voz baja durante toda la próxima ronda.",
+      "Deja que alguien te haga cosquillas durante 10 segundos sin reírte.","Canta el alfabeto con una melodía dramática.",
+      "Haz una imitación de un presentador de noticias.","Deja que alguien elija tu próxima foto de perfil por 5 minutos.",
+      "Pon una cara seria y no te rías aunque todos lo intenten por 30 segundos.","Haz 5 flexiones o 10 sentadillas.",
+      "Inventa un idioma nuevo y habla en él por 1 minuto.","Cuenta una historia inventada sobre la persona a tu izquierda.",
+      "Haz un baile de 30 segundos con la canción que elija el grupo.","Deja que alguien te dibuje algo en la frente.",
+      "Imita a un cantante famoso durante 20 segundos.","Haz un discurso de 30 segundos sobre por qué el pan es lo mejor.",
+      "Deja que el grupo te ponga un reto de 10 segundos.","Haz una imitación de tu mamá cuando se enoja.",
+      "Deja que alguien del grupo te revise el celular por 15 segundos.","Canta \"feliz cumpleaños\" a alguien que no cumpla años.",
+      "Haz una mueca y mantenla durante el próximo turno.","Imita a un bebé llorando.",
+      "Deja que alguien te ponga un sombrero improvisado con lo que haya.","Haz 3 sonidos de animales diferentes.",
+      "Cuenta un chiste verde sin reírte.","Haz un mini monólogo sobre tu peor cita.",
+      "Deja que alguien te ponga una penitencia a elección.","Termina con un baile de victoria de 10 segundos."
+    ]
+  },
+  pareja: {
+    verdades: [
+      "¿En qué momento supiste que te estabas enamorando de mí?","¿Qué es lo que más te gusta de nuestra relación?",
+      "¿Cuál fue tu primera impresión de mí?","¿Qué es algo que piensas a menudo y nunca me has dicho?",
+      "¿Cuál es tu recuerdo favorito juntos?","¿Qué es lo que más te atrae físicamente de mí?",
+      "¿Alguna vez has sentido celos de alguien de mi pasado?","¿Qué sueño te gustaría cumplir conmigo?",
+      "¿Cuál es la cosa más romántica que has pensado hacer y no hiciste?","¿Qué es lo que más te preocupa de nuestro futuro?",
+      "¿Cuál es tu miedo más grande dentro de una relación?","¿Qué canción te recuerda a nosotros?",
+      "¿Qué es lo que más te molesta de mí y nunca me lo has dicho?","¿Cuál fue el momento en que más orgulloso/a te sentiste de mí?",
+      "¿A dónde viajarías conmigo si pudiéramos ir a cualquier lugar mañana?","¿Cuál es esa fantasía romántica que aún no hemos cumplido?",
+      "¿Qué opinas realmente de mi forma de vestir?","¿Cuál es la mejor cualidad que tengo como pareja?",
+      "¿Qué es lo que más disfrutas de nuestras conversaciones?","¿Alguna vez has imaginado nuestro futuro con hijos?",
+      "¿Qué te hace sentir más amado/a por mí?","¿Cuál ha sido el momento más difícil que hemos superado?",
+      "¿Qué te gustaría que hiciéramos más seguido?","¿Cuál es tu recuerdo favorito de nuestra primera cita?",
+      "¿Qué es lo que más admiras de mí?","¿Cómo te imaginas nuestra vida dentro de 10 años?",
+      "¿Qué es lo que más celos te da de mi trabajo o de mis amigos?","¿Cuál es el detalle más pequeño que hago y que valoras?",
+      "¿Qué te gustaría que te dijera más seguido?","¿Cuál es tu mayor inseguridad en esta relación?",
+      "¿Qué es lo que nunca cambiarías de nosotros?","¿Alguna vez has llorado por mí?",
+      "¿Cuál es la locura de amor más grande que has hecho?","¿Qué es lo que más te gusta de nuestra intimidad?",
+      "¿Cuál es tu lugar favorito para estar conmigo?","¿Qué te hace sentir más cerca de mí?",
+      "¿Qué promesa te gustaría que nos hiciéramos?","¿Cuál es la cualidad que más te costó aceptar de mí?",
+      "¿Qué te gustaría aprender juntos?","¿Cuál es tu recuerdo favorito de nuestras salidas o vacaciones?",
+      "¿Qué pensaste la primera vez que nos quedamos solos?","¿Qué es lo que más te gusta de mi forma de quererte?",
+      "¿Cuál es tu mayor deseo para nosotros?","¿Qué te haría terminar una relación?",
+      "¿Cuál es el mejor consejo sobre el amor que te han dado?","¿Qué te gustaría que hiciéramos diferente?",
+      "¿Cómo sería tu cita perfecta conmigo?","¿Qué es lo que más te gusta de mi personalidad?",
+      "¿Qué es lo que te hace reír de mí?","¿Por qué sigues eligiéndome cada día?",
+      "¿Qué es lo primero que pensaste al verme dormir?","¿Qué es lo que más te cuesta decirme cuando estamos peleando?",
+      "¿Qué momento de nuestra relación te gustaría revivir?","¿Cuál es tu mayor logro desde que estamos juntos?",
+      "¿Qué es lo que más te gustaría que yo entendiera de ti?","¿Alguna vez has imaginado cómo sería nuestra boda?",
+      "¿Qué es lo que te hace sentir más seguro/a conmigo?","¿Qué es lo que te gustaría que hiciéramos más en la cama?",
+      "¿Cuál es tu mayor sueño personal que quieras compartir conmigo?","¿Qué es lo que nunca me has contado por miedo?",
+      "¿Qué detalle mío te parece único?","¿Cómo describirías nuestro amor en 3 palabras?",
+      "¿Qué es lo que más te gusta de nuestras mañanas juntos?","¿Qué es lo que más te gusta de nuestras noches juntos?",
+      "¿Qué es lo que te gustaría cambiar de nuestra rutina?","¿Cuál ha sido tu mejor regalo para mí?",
+      "¿Qué es lo que más te ha sorprendido de mí?","¿Qué es lo que más te gusta hacer conmigo?",
+      "¿Qué es lo que te gustaría que te dijera al oído?","¿Cuál es el momento en que más me has extrañado?",
+      "¿Qué es lo que te enamoró de mí?","¿Qué es lo que más te gusta de nuestra complicidad?",
+      "¿Qué es lo que te gustaría aprender de mí?","¿Qué es lo que nunca le contarías a tus amigos de nosotros?",
+      "¿Qué es lo que te gustaría que te perdonara?","¿Qué es lo que más te gusta de nuestra convivencia?",
+      "¿Cuál es tu plan ideal para un aniversario?","¿Qué es lo que te gustaría que hiciéramos más seguido?",
+      "¿Qué es lo que te gusta de mi forma de mirarte?","¿Qué es lo que te gustaría que te dijera en la intimidad?",
+      "¿Cuál es el mejor cumplido que te he hecho?","¿Qué es lo que te hace sentir más orgulloso/a de nosotros?",
+      "¿Qué es lo que te gustaría que yo mejorara por nosotros?","¿Qué es lo que te gustaría que hiciéramos en nuestras próximas vacaciones?",
+      "¿Qué es lo que te gusta de mis abrazos?","¿Qué es lo que te gusta de mis besos?",
+      "¿Qué es lo que te gusta de mi voz?","¿Qué es lo que te gustaría decirme sin filtros?",
+      "¿Qué es lo que nunca has entendido de mí?","¿Qué es lo que te gustaría que hiciéramos diferente?",
+      "¿Qué es lo que más recuerdas de nuestras primeras citas?","¿Qué es lo que te gustaría que recordáramos juntos?",
+      "¿Qué es lo que te hace sentir más en casa conmigo?","¿Qué es lo que nunca querrías que perdiera de nosotros?"
+    ],
+    retos: [
+      "Dale a tu pareja un abrazo de 30 segundos en silencio.","Dile 3 cosas que amas de él/ella mirándole a los ojos.",
+      "Bésale la frente y luego la mejilla.","Cuéntale tu momento favorito juntos sin usar la palabra \"amor\".",
+      "Dale un masaje de hombros durante un minuto.","Baila una canción lenta con tu pareja sin música.",
+      "Escríbele un poema de 4 líneas en el momento.","Dile al oído algo que nunca le hayas dicho.",
+      "Tómense una selfie romántica y ponla de fondo de pantalla.","Hazle un cumplido por cada dedo de su mano.",
+      "Míralo/a a los ojos durante 30 segundos sin reírte.","Descríbele cómo sería tu cita perfecta con él/ella.",
+      "Dale un beso donde tú elijas.","Dedícale una canción y cántale el coro.",
+      "Hazle una promesa romántica para este mes.","Escríbele su nombre en el brazo con besos suaves.",
+      "Cuéntale qué pensaste la primera vez que lo/la viste.","Hazle un dibujo rápido de ustedes dos.",
+      "Dile 3 razones por las que te sientes afortunado/a.","Abrázalo/a por la espalda durante un minuto.",
+      "Cuéntale un secreto que nunca le hayas contado.","Hazle una pregunta que siempre hayas querido hacerle.",
+      "Dale un masaje en las manos durante 2 minutos.","Cuéntale cómo te imaginas su vejez juntos.",
+      "Bésale la mano y dile algo bonito.","Haz una lista de 5 cosas que quieras hacer con él/ella.",
+      "Cuéntale tu momento más embarazoso frente a él/ella.","Dedícale un baile improvisado.",
+      "Dile qué es lo que más te gusta de su cuerpo.","Escríbele una carta de 3 líneas en el momento.",
+      "Cuéntale tu fantasía romántica más grande.","Repite su nombre 5 veces de la forma más romántica posible.",
+      "Tómense una foto imitando una escena de película romántica.","Dile \"te quiero\" en 3 idiomas diferentes.",
+      "Hazle un peinado divertido.","Cuéntale qué es lo que más te gusta de su risa.",
+      "Inventen juntos un apodo nuevo para su relación.","Dale un beso suave en el cuello.",
+      "Cuéntale qué sentiste la primera vez que se besaron.","Prométele una cita sorpresa esta semana.",
+      "Cuéntale cómo te gustaría celebrar su aniversario.","Dile 3 cosas que cambiarías de ti por él/ella.",
+      "Dale un masaje en los pies.","Cuéntale una cualidad suya que admiras y nunca le dijiste.",
+      "Bailen juntos 30 segundos bien pegados.","Escríbele un mensaje romántico estando a su lado.",
+      "Hazle una serenata con una canción inventada.","Cuéntale qué fue lo que te enamoró de él/ella.",
+      "Abrázalo/a y dile al oído algo que lo/la haga sonreír.","Cierren la ronda con un beso de 10 segundos.",
+      "Cuéntale una cosa que harías por él/ella sin dudarlo.","Hazle un cumplido sobre su mirada.",
+      "Cuéntale una anécdota divertida de cuando empezaron.","Dile lo que pensaste el primer beso.",
+      "Hazle un baile lento durante 30 segundos.","Cuéntale cuál es tu momento favorito del día a su lado.",
+      "Escribe en su espalda con el dedo y que adivine la palabra.","Dile al oído lo que te gusta de su forma de ser.",
+      "Hazle una pregunta íntima y respóndela tú también.","Dale un beso en el hombro y dile algo bonito.",
+      "Cuéntale un sueño que tuviste con él/ella.","Hazle una lista de cosas que quieras hacer juntos este año.",
+      "Cuéntale una promesa que quieras cumplirle.","Cierra los ojos y describe cómo te hace sentir.",
+      "Hazle un dibujo de algo que los represente.","Dedícale una frase que nunca le hayas dicho.",
+      "Cuéntale cuál es tu recuerdo favorito de su voz.","Dile una cosa que te dé curiosidad de él/ella.",
+      "Cuéntale lo que sentiste el primer día que se vieron.","Hazle una promesa con fecha límite.",
+      "Cuéntale cuál es tu lugar favorito para besarlo/a.","Dile una cosa que quieras aprender juntos.",
+      "Hazle un cumplido que nunca le hayas hecho.","Cuéntale una fantasía que tengas con él/ella.",
+      "Cuéntale qué te gustaría que hicieran mañana.","Hazle una pregunta sobre su pasado.",
+      "Dedícale una canción de amor en 30 segundos.","Cuéntale una cosa que te gustaría que hiciéramos más seguido.",
+      "Dile algo que nunca le hayas contado de tus sentimientos.","Hazle un baile con una canción inventada.",
+      "Cuéntale cuál es tu momento favorito de la semana juntos.","Dile algo que quieras que sepa de ti.",
+      "Cuéntale un sueño que tengas con él/ella.","Hazle un dibujo de cómo los ves en 10 años.",
+      "Cuéntale qué te hace sentir orgulloso/a de él/ella.","Dile 3 cosas que quieras hacer por él/ella.",
+      "Cuéntale qué te gusta de su forma de quererte.","Hazle un cumplido con una metáfora.",
+      "Cuéntale qué te parece lo más bonito de su personalidad.","Dile qué te gustaría que hiciéramos esta noche.",
+      "Cuéntale qué te gusta de su forma de mirarte.","Hazle una pregunta que te dé curiosidad de su futuro.",
+      "Cuéntale cuál es tu mejor recuerdo con él/ella.","Dile qué te gustaría que te dijera más seguido.",
+      "Cuéntale qué sientes cuando estás a su lado.","Termina con un abrazo de 30 segundos."
+    ]
+  },
+  hot: {
+    verdades: [
+      "¿Cuál es tu zona más erógena y quién la descubrió?","¿Qué es lo que más te excita de tu pareja?",
+      "¿Cuál es la fantasía que más te gustaría cumplir?","¿Dónde te gustaría que te besaran ahora mismo?",
+      "¿Qué ropa interior te hace sentir más atractivo/a?","¿Qué parte del cuerpo de tu pareja te vuelve loco/a?",
+      "¿Cuál ha sido el lugar más atrevido donde lo han hecho?","¿Qué te gustaría que te hicieran en este momento?",
+      "¿Cuál es tu posición favorita?","¿Alguna vez has tenido un sueño erótico con alguien de esta habitación?",
+      "¿Qué es lo que más te gusta que te digan en la intimidad?","¿Cuál es tu mayor fetiche?",
+      "¿Qué te gustaría probar que aún no has probado?","¿Cuántas veces a la semana te gustaría tener intimidad?",
+      "¿Qué es lo primero que miras de una persona que te atrae?","¿Cuál es el mensaje más atrevido que has enviado?",
+      "¿Qué harías si tu pareja te propusiera un trío?","¿Cuál es el juguete sexual que más te gustaría tener?",
+      "¿En qué lugar te gustaría tener intimidad y aún no lo han hecho?","¿Qué te gusta más: dar o recibir?",
+      "¿Cuál es la prenda de tu pareja que más te gusta quitarte?","¿Qué es lo que más te gusta de mis manos?",
+      "¿Cuál es tu recuerdo más caliente de nosotros?","¿Qué te gustaría que hiciéramos diferente en la cama?",
+      "¿Cuál es tu fantasía con un uniforme o disfraz?","¿Prefieres la luz encendida o apagada?",
+      "¿Qué es lo que más te tienta de mí cuando estamos en público?","¿Qué parte de mi cuerpo es tu favorita para besar?",
+      "¿Cuánto duraría tu beso perfecto?","¿Qué te gustaría que te susurrara al oído?",
+      "¿Cuál es la cosa más atrevida que has hecho en un coche?","¿Alguna vez has enviado fotos atrevidas? ¿A quién?",
+      "¿Qué parte de mi cuerpo te gustaría masajear?","¿Cuál es tu sueño erótico más recurrente?",
+      "¿Qué harías si te dijera que quiero algo nuevo esta noche?","¿Cuál es tu límite en la intimidad?",
+      "¿Qué gesto mío te pone más?","¿Cuál es la fantasía que nunca le has contado a nadie?",
+      "¿Qué te gustaría que usáramos en la cama?","¿Te gusta más dominar o dejarte llevar?",
+      "¿Cuál es el mejor lugar donde te han besado?","¿Qué te gustaría hacer en la ducha?",
+      "¿Cuál es esa fantasía que tienes conmigo desde hace tiempo?","¿Qué es lo que más te excita de mi voz?",
+      "¿Cuál es la cita más caliente que recuerdas?","¿Qué te gustaría que te hiciera durante una hora entera?",
+      "¿Cuál es tu mayor punto débil?","¿Qué tan seguido piensas en nosotros de forma atrevida?",
+      "¿Qué es lo que más te gusta de la intimidad conmigo?","¿Qué te gustaría que probáramos la próxima vez?",
+      "¿Cuál es la parte de tu cuerpo que más te gusta que yo toque?","¿Qué te gustaría que te hiciera con la boca?",
+      "¿Cuál es tu fantasía más recurrente?","¿Qué es lo que más te gusta de mi cuerpo?",
+      "¿Qué te gustaría hacer la próxima vez que estemos solos?","¿Cuál es el lugar menos pensado donde lo has hecho?",
+      "¿Qué te gustaría probar conmigo primero?","¿Cuál es tu mayor deseo sexual sin cumplir?",
+      "¿Qué es lo que más te gusta de nuestra intimidad?","¿Cuál es tu posición favorita para empezar?",
+      "¿Qué es lo que más te gusta de mi forma de besarte?","¿Qué es lo que más te gustaría que hiciéramos esta noche?",
+      "¿Cuál es tu mayor fantasía con un disfraz?","¿Qué es lo que más te gustaría probar?",
+      "¿Qué es lo que más te gusta de nuestros encuentros?","¿Cuál es la fantasía que más te ha costado confesar?",
+      "¿Qué es lo que más te gustaría que hiciéramos en la ducha?","¿Qué es lo que más te gusta de mis manos en la intimidad?",
+      "¿Qué es lo que más te gustaría probar en la cama?","¿Cuál es tu lugar favorito para un encuentro?",
+      "¿Qué es lo que más te excita de nuestra relación?","¿Qué es lo que más te gustaría que hiciéramos diferente?",
+      "¿Qué es lo que más te gusta de nuestras noches?","¿Cuál es tu recuerdo favorito de nuestra intimidad?",
+      "¿Qué es lo que más te gustaría que te dijera durante la intimidad?","¿Qué es lo que más te excita de mi cuerpo?",
+      "¿Qué es lo que más te gustaría que hiciéramos esta semana?","¿Cuál es tu fantasía con un lugar público?",
+      "¿Qué es lo que más te gusta de nuestra química?","¿Cuál es tu mayor fantasía sin cumplir?",
+      "¿Qué es lo que más te gustaría probar conmigo?","¿Cuál es tu mayor deseo que aún no me has contado?",
+      "¿Qué es lo que más te gusta de mis besos?","¿Qué es lo que más te gustaría que hiciéramos hoy?",
+      "¿Cuál es tu mayor fantasía con nosotros?","¿Qué es lo que más te gustaría que te hiciera?",
+      "¿Qué es lo que más te gusta de nuestra intimidad?","¿Cuál es tu recuerdo favorito de nosotros?",
+      "¿Qué es lo que más te gustaría que probáramos?","¿Qué es lo que más te excita de nuestra relación?",
+      "¿Cuál es tu mayor fantasía conmigo?","¿Qué es lo que más te gustaría que hiciéramos juntos?",
+      "¿Qué es lo que más te gusta de nuestra química en la cama?","¿Cuál es tu mayor deseo que aún no hemos cumplido?"
+    ],
+    retos: [
+      "Dale un beso de 10 segundos a tu pareja.","Susúrrale algo atrevido al oído.",
+      "Haz un baile sensual para tu pareja durante 20 segundos.","Besa el cuello de tu pareja lentamente.",
+      "Quítate una prenda de ropa (a tu elección).","Haz un striptease de 20 segundos.",
+      "Siéntate en las piernas de tu pareja durante la próxima ronda.","Dale un masaje en la espalda durante 2 minutos.",
+      "Besa a tu pareja donde él/ella te lo pida.","Cuéntale tu fantasía más atrevida al oído.",
+      "Hazle un cumplido sobre su cuerpo.","Tómense una foto sugerente juntos.",
+      "Baila pegado/a a tu pareja una canción completa.","Dale un beso en el hombro y recorre lentamente hasta el cuello.",
+      "Deja que tu pareja te dé un beso donde quiera.","Escríbele un mensaje atrevido aunque esté a tu lado.",
+      "Haz una pose sugerente y mantenla 15 segundos.","Véndale los ojos a tu pareja y dale un beso sorpresa.",
+      "Acaricia suavemente la espalda de tu pareja durante un minuto.","Cuéntale qué te gustaría hacerle esta noche.",
+      "Dale un masaje en las piernas por encima de la ropa.","Besa la mano de tu pareja y sube hasta el hombro.",
+      "Baila lentamente con tu pareja sin música.","Dile al oído 3 cosas que te excitan.",
+      "Quítale una prenda a tu pareja, si ambos aceptan.","Haz que tu pareja adivine lo que quieres con mímica.",
+      "Dale un beso en la mejilla y luego muy cerca de la boca.","Susúrrale una canción al oído.",
+      "Deja que tu pareja te dibuje algo con el dedo en la espalda.","Comparte una historia atrevida que nunca hayas contado.",
+      "Haz 3 cumplidos en 10 segundos sobre su cuerpo.","Dile a tu pareja qué es lo que más te tienta de él/ella.",
+      "Da un beso de película: inclínala y bésala.","Descríbele tu escenario ideal de una noche romántica.",
+      "Déjate vendar los ojos y adivina dónde te besa tu pareja.","Acaricia su mano y mira fijamente sus ojos por 20 segundos.",
+      "Cuéntale qué pensaste la primera vez que lo/la viste sin ropa.","Besa su frente, su nariz y luego sus labios.",
+      "Hazle un masaje en los pies.","Ponte una prenda de ropa de tu pareja durante la siguiente ronda.",
+      "Cuéntale cuál es tu lugar favorito para un encuentro.","Haz un baile de 15 segundos sin dejar el contacto visual.",
+      "Dile lo que te gustaría que te hiciera mañana.","Dale un beso en el cuello y susúrrale algo.",
+      "Deja que tu pareja elija dónde darle un beso.","Escríbele 3 emojis que describan lo que quieres hacerle.",
+      "Describe tu noche perfecta en 30 segundos.","Haz una promesa atrevida para esta noche.",
+      "Dale un abrazo de oso y no lo sueltes hasta tu próximo turno.","Termina con un beso lento de 15 segundos.",
+      "Haz un cumplido sobre su mirada con dramatismo.","Bésale la mejilla y dile algo atrevido al oído.",
+      "Dale un masaje en la nuca durante un minuto.","Cuéntale un sueño erótico que hayas tenido.",
+      "Hazle un dibujo con el dedo en el brazo y que adivine qué es.","Dile lo que te gustaría que te hiciera esta noche.",
+      "Hazle un baile de 10 segundos con contacto visual.","Cuéntale qué es lo que más te tienta de él/ella.",
+      "Bésale el cuello y sube hasta la oreja.","Dale un beso de 5 segundos en cada mejilla.",
+      "Dile al oído lo que te gusta de su cuerpo.","Cuéntale cuál es tu fantasía más recurrente.",
+      "Haz una pose sexy y mantenla 10 segundos.","Bésale la mano y dile algo bonito.",
+      "Dile una fantasía que nunca le hayas contado.","Acaríciale la espalda lentamente durante 20 segundos.",
+      "Hazle un cumplido sobre su forma de moverse.","Dale un abrazo largo y susúrrale algo.",
+      "Cuéntale un lugar donde te gustaría tener un encuentro.","Bésale la frente y dile algo que sientas.",
+      "Dile lo que te gustaría que hiciéramos la próxima vez.","Hazle un masaje en los hombros durante 30 segundos.",
+      "Cuéntale qué es lo que más te excita de él/ella.","Hazle una promesa atrevida para el próximo encuentro.",
+      "Dile un secreto que nunca le hayas contado.","Bésale el cuello y susúrrale algo.",
+      "Hazle un baile de 15 segundos sin música.","Cuéntale una fantasía con un lugar público.",
+      "Dale un beso sorpresa donde menos lo espere.","Dile lo que más te gusta de sus manos.",
+      "Haz una pose con la que te sientas atractivo/a.","Cuéntale qué te gustaría probar la próxima vez.",
+      "Dile una fantasía que tengas con él/ella.","Bésale el hombro y sube hasta el cuello.",
+      "Hazle un masaje en las manos durante un minuto.","Cuéntale cuál es tu momento favorito con él/ella.",
+      "Dile algo que quieras hacerle esta noche.","Hazle un cumplido sobre su forma de besar.",
+      "Cuéntale un deseo que tengas con él/ella.","Bésale lentamente durante 8 segundos.",
+      "Dile lo que sientes cuando lo/la ves.","Dale un abrazo y susúrrale algo al oído.",
+      "Cuéntale una fantasía que nunca le hayas contado.","Termina con un beso de 15 segundos y un cumplido."
+    ]
+  },
+  sex: {
+    verdades: [
+      "¿Cuál es tu posición sexual favorita y por qué?","¿Con qué frecuencia te gustaría tener relaciones?",
+      "¿Qué es lo que más te excita de tu pareja en la cama?","¿Cuál ha sido la mejor experiencia de sexo oral que has tenido?",
+      "¿Qué es lo que te gustaría que hiciéramos más seguido?","¿Alguna vez has fingido un orgasmo? ¿Con quién?",
+      "¿Cuál es tu mayor fantasía sexual sin cumplir?","¿Dónde está el lugar más arriesgado donde lo han hecho?",
+      "¿Qué te gusta que te digan en la cama?","¿Cuál es tu fetiche más secreto?",
+      "¿Cuántas veces al día piensas en sexo?","¿Qué es lo que nunca harías en la cama?",
+      "¿Cuál es la cosa más loca que has hecho durante el sexo?","¿Prefieres sexo rápido o lento y prolongado?",
+      "¿Qué juguete sexual te gustaría usar conmigo?","¿Qué te gustaría probar que no hemos probado?",
+      "¿Qué parte del cuerpo de tu pareja prefieres besar?","¿Alguna vez has tenido sexo en un lugar público?",
+      "¿Cuál es tu postura favorita para empezar?","¿Qué es lo que te hace llegar al orgasmo más rápido?",
+      "¿Te gusta más dar o recibir placer?","¿Cuál es tu recuerdo sexual más intenso?",
+      "¿Qué te gustaría que te hiciera durante más tiempo?","¿Has usado juguetes sexuales? ¿Cuáles?",
+      "¿Cuál es tu fantasía con alguien más en la habitación?","¿Qué es lo que más te gusta hacer con la boca?",
+      "¿Cuál es la parte de tu cuerpo más sensible?","¿Qué te gustaría que te hiciera esta noche?",
+      "¿Cuál es la fantasía que te da más morbo?","¿Con qué frecuencia te masturbas?",
+      "¿Qué es lo que más te gusta de mis manos en la cama?","¿Alguna vez has tenido sexo con alguien del mismo sexo?",
+      "¿Cuál es tu punto débil sexual?","¿Qué es lo que te gustaría que usáramos en la cama?",
+      "¿Cuál es tu fantasía con disfraces?","¿Te gustaría grabar un video íntimo? ¿Por qué?",
+      "¿Cuál es la duración ideal de una relación sexual?","¿Qué es lo que más te gusta de nuestra vida sexual?",
+      "¿Qué te gustaría cambiar de nuestra intimidad?","¿Cuál es la posición que más te cuesta?",
+      "¿Qué te gustaría que te susurrara mientras lo hacemos?","¿Cuál es tu mayor deseo sexual?",
+      "¿Alguna vez has querido hacerlo en un lugar prohibido?","¿Qué te excita más: la vista, el tacto o el sonido?",
+      "¿Cuál es tu recuerdo favorito de nuestra primera vez?","¿Qué te gustaría hacer conmigo en la ducha?",
+      "¿Cuál es el cumplido sexual que más te ha gustado?","¿Qué te gustaría que hiciéramos esta semana?",
+      "¿Cuál es el límite que no estás dispuesto/a a cruzar?","¿Qué es lo que más te gusta de nuestra química sexual?",
+      "¿Cuál es tu técnica favorita para dar placer?","¿Qué es lo que más te gustaría que te hiciéramos esta noche?",
+      "¿Cuál es tu fantasía con un trío?","¿Qué es lo que más te excita de nuestra intimidad?",
+      "¿Cuál es tu juguete sexual favorito?","¿Qué es lo que más te gustaría probar conmigo?",
+      "¿Cuál es tu lugar favorito de la casa para hacerlo?","¿Qué es lo que más te gusta de mi cuerpo desnudo?",
+      "¿Cuál es tu posición favorita para terminar?","¿Qué es lo que más te gusta hacer después del sexo?",
+      "¿Cuál es tu fantasía con un espejo?","¿Qué es lo que más te gusta de nuestra vida sexual?",
+      "¿Cuál es tu lugar favorito para tener sexo?","¿Qué es lo que más te gustaría probar en la cama?",
+      "¿Cuál es tu mayor fantasía con la ropa?","¿Qué es lo que más te gusta de nuestra conexión sexual?",
+      "¿Cuál es tu momento favorito de nuestra intimidad?","¿Qué es lo que más te gustaría hacer conmigo?",
+      "¿Cuál es tu fantasía con ataduras?","¿Qué es lo que más te gusta de nuestra química?",
+      "¿Cuál es tu fantasía con disfraces o uniformes?","¿Qué es lo que más te gustaría que hiciéramos?",
+      "¿Cuál es tu fantasía con un lugar público?","¿Qué es lo que más te gusta de nuestra vida íntima?",
+      "¿Cuál es tu fantasía con un masaje?","¿Qué es lo que más te gustaría probar en la cama?",
+      "¿Cuál es tu fantasía con un juego de roles?","¿Qué es lo que más te gusta de nuestra intimidad?",
+      "¿Cuál es tu fantasía con un trío o intercambio?","¿Qué es lo que más te gustaría hacer conmigo?",
+      "¿Cuál es tu fantasía con juguetes?","¿Qué es lo que más te gusta de nuestra conexión?",
+      "¿Cuál es tu fantasía con un lugar exótico?","¿Qué es lo que más te gustaría probar en la cama?",
+      "¿Cuál es tu mayor deseo sexual sin cumplir?","¿Qué es lo que más te gusta de nuestra química en la cama?",
+      "¿Cuál es tu fantasía con la luz o la oscuridad?","¿Qué es lo que más te gustaría hacer conmigo?",
+      "¿Cuál es tu fantasía con un masaje erótico?","¿Qué es lo que más te gusta de nuestra intimidad?",
+      "¿Cuál es tu fantasía con un striptease?","¿Qué es lo que más te gustaría probar en la cama?",
+      "¿Cuál es tu mayor fantasía conmigo?","¿Qué es lo que más te gustaría que hiciéramos esta noche?",
+      "¿Cuál es tu fantasía con un baño juntos?","¿Qué es lo que más te gusta de nuestra vida sexual?"
+    ],
+    retos: [
+      "Practiquen sexo oral durante 2 minutos.","Prueben una posición que nunca hayan usado.",
+      "Hagan un striptease mutuo de 1 minuto.","Denle un masaje erótico de 5 minutos.",
+      "Usen un juguete sexual esta noche.","Hagan el amor con las luces encendidas.",
+      "Prueben sexo en una habitación diferente de la casa.","Hagan un juego de roles durante 10 minutos.",
+      "Besen todo el cuerpo de su pareja sin usar las manos.","Practiquen sexo oral a su pareja durante 1 minuto.",
+      "Hagan una lluvia de ideas de fantasías y elijan una para cumplir.","Véndale los ojos a tu pareja y sorpréndele.",
+      "Hagan un baile erótico juntos.","Prueben una nueva técnica con las manos.",
+      "Cuéntense sus fantasías más profundas y elijan una.","Hagan el amor sin prisa durante al menos 20 minutos.",
+      "Prueben el sexo en la ducha.","Dense placer mutuamente al mismo tiempo.",
+      "Hagan una sesión de besos de 5 minutos sin pasar a más.","Prueben una nueva posición con la ayuda de un cojín.",
+      "Jueguen con dados eróticos.","Practiquen respiración y sexo tántrico juntos.",
+      "Hagan el amor al aire libre si es posible.","Prueben un masaje con aceite.",
+      "Cuéntense qué les gustaría que les hicieran y háganlo.","Tengan una noche sin ropa interior.",
+      "Prueben la posición de la silla.","Hagan el amor frente al espejo.",
+      "Cumplan una fantasía nueva juntos.","Practiquen sexo oral mutuo.",
+      "Prueben el sexo lento con contacto visual constante.","Hagan una sesión privada de fotos íntimas.",
+      "Prueben un lubricante nuevo.","Hagan el amor con música sensual de fondo.",
+      "Prueben una posición de pie.","Jueguen un \"verdad o reto\" solo de sexo.",
+      "Practiquen estimulación manual durante 5 minutos.","Hagan el amor en la cocina.",
+      "Prueben una nueva posición en la cama.","Hagan un intercambio completo de masajes eróticos.",
+      "Prueben sexo oral después de un baño juntos.","Hagan una sesión de besos por todo el cuerpo.",
+      "Prueben sexo con contrastes de temperatura (hielo o calor).","Hagan el amor hasta que ambos terminen.",
+      "Prueben una fantasía de dominación suave.","Hagan un striptease con música.",
+      "Prueben ataduras suaves, siempre con seguridad y consentimiento.","Tomen un baño juntos y pasen a más.",
+      "Prueben una nueva posición del Kama Sutra.","Hagan el amor esta noche sin interrupciones.",
+      "Prueben una nueva posición sentados.","Hagan el amor con las ventanas abiertas si es posible.",
+      "Prueben sexo oral mutuo durante 3 minutos.","Hagan una sesión de besos por todo el cuerpo.",
+      "Prueben un juego de roles con disfraces.","Hagan el amor bajo la ducha.",
+      "Prueben una nueva posición con la ayuda de la pared.","Hagan una sesión de masaje con velas.",
+      "Prueben el sexo tántrico con contacto visual.","Hagan el amor en el suelo.",
+      "Prueben una nueva posición con las piernas en alto.","Hagan una sesión de besos en el cuello.",
+      "Prueben un juego de roles de dominación suave.","Hagan el amor en la bañera.",
+      "Prueben una nueva posición de lado.","Hagan una sesión de masaje en los pies.",
+      "Prueben un juego de roles de profesor/alumno.","Hagan el amor con música lenta.",
+      "Prueben una nueva posición con la ayuda de un cojín.","Hagan una sesión de besos en la espalda.",
+      "Prueben un juego de roles de médico/paciente.","Hagan el amor en el sofá.",
+      "Prueben una nueva posición con las manos atadas.","Hagan una sesión de masaje en la espalda.",
+      "Prueben un juego de roles de jefe/empleado.","Hagan el amor en la cocina.",
+      "Prueben una nueva posición de rodillas.","Hagan una sesión de besos en el pecho.",
+      "Prueben un juego de roles de extraños.","Hagan el amor en el balcón si es posible.",
+      "Prueben una nueva posición con la ayuda de una silla.","Hagan una sesión de masaje en las piernas.",
+      "Prueben un juego de roles de pareja famosa.","Hagan el amor en la ducha por más tiempo.",
+      "Prueben una nueva posición acostados.","Hagan una sesión de besos en el vientre.",
+      "Prueben un juego de roles de policía/ladrón.","Hagan el amor con un espejo enfrente.",
+      "Prueben una nueva posición de pie contra la pared.","Hagan una sesión de masaje con plumas.",
+      "Prueben un juego de roles de masajista/cliente.","Hagan el amor con velas encendidas.",
+      "Prueben una nueva posición de lado con una pierna arriba.","Hagan una sesión de besos en los muslos.",
+      "Prueben un juego de roles de pirata/prisionero.","Terminen con una sesión de besos de 10 minutos."
+    ]
+  }
+};
+
+/* Niveles de intensidad para hot/sex (1=bajo, 2=medio, 3=alto) */
+const LEVELS = {
+  hot: {
+    verdades: [2,2,3,2,1,2,3,2,3,3,2,3,3,2,1,2,3,3,3,2,2,2,3,3,2,1,2,2,1,2,3,3,1,3,3,2,2,3,3,3,1,3,3,2,3,3,2,2,3,3,2,2,3,2,3,2,3,3,2,3,2,1,2,2,2,3,2,3,2,2,3,2,3,2,2,2,3,2,2,3,2,2,2,3,2,2,3,2,2,3,2,2,3,3,2,3,3,2,2,2],
+    retos:    [1,2,2,2,3,3,2,1,2,3,1,3,2,3,2,2,2,2,1,3,2,1,1,3,3,2,2,1,1,3,1,2,2,2,3,1,3,1,1,2,3,2,3,3,2,2,2,3,1,2,2,2,2,3,2,2,2,3,2,2,2,3,2,2,2,3,2,3,2,2,3,2,3,2,2,3,2,3,2,2,3,2,3,2,2,3,2,2,3,2,2,3,2,3,2,2,2,2,3,3]
+  },
+  sex: {
+    verdades: [2,1,2,2,2,2,3,3,2,3,1,2,3,2,3,3,2,3,2,2,2,3,3,3,3,3,2,3,3,2,3,3,2,3,3,3,2,2,3,3,3,3,3,2,2,3,2,3,2,2,2,3,3,2,2,3,3,2,3,2,2,3,3,2,2,3,2,2,3,3,2,2,3,3,2,2,3,3,2,2,3,3,2,2,3,3,2,2,3,3,2,2,3,3,2,2,3,2,2,3],
+    retos:    [2,2,2,1,3,1,2,2,2,2,2,2,2,2,3,2,3,2,1,1,2,2,3,2,2,2,2,3,3,3,1,3,2,1,2,2,2,3,2,2,3,1,3,3,3,2,3,2,2,2,3,2,3,2,3,2,3,2,3,2,3,3,3,2,3,2,3,2,3,3,3,2,3,2,3,3,3,2,3,2,3,3,3,2,3,3,3,2,3,3,3,2,3,3,3,2,3,3,3,2]
+  }
+};
+
+const MODES = [
+  { id:'amigos', nombre:'Amigos', emoji:'🎉', tag:'Clásico',
+    desc:'Retos divertidos, bromas y verdades para reír en grupo.',
+    grad:'linear-gradient(135deg,#3b82f6,#facc15)', hasIntensity:false },
+  { id:'pareja', nombre:'Pareja', emoji:'💞', tag:'Conexión',
+    desc:'Verdades profundas y retos románticos para conocerse mejor.',
+    grad:'linear-gradient(135deg,#ec4899,#fb7185)', hasIntensity:false },
+  { id:'hot', nombre:'Hot', emoji:'🔥', tag:'Picante',
+    desc:'Retos y verdades atrevidos para subir la temperatura.',
+    grad:'linear-gradient(135deg,#dc2626,#f97316)', hasIntensity:true },
+  { id:'sex', nombre:'Sex', emoji:'😈', tag:'Explícito +18',
+    desc:'Contenido íntimo y explícito, solo para parejas.',
+    grad:'linear-gradient(135deg,#7c3aed,#1e1b4b)', hasIntensity:true }
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   ESTADO + PERSISTENCIA
+   ══════════════════════════════════════════════════════════════════ */
+const LS_KEY = 'verdad_o_reto_v5';
+const MODE_IDS = MODES.map(m => m.id);
+
+const state = {
+  players: [], turn: 0, mode: null, intensity: 2,
+  punishment: 'trago', wcPerPlayer: 3,
+  used: {}, settings: { sound: true, vibe: true, wake: true },
+  screen: 'start'
+};
+
+function initUsed(){ MODE_IDS.forEach(m => { state.used[m] = { verdad: [], reto: [] }; }); }
+initUsed();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY); if(!raw) return;
+    const s = JSON.parse(raw);
+    if(Array.isArray(s.players)){
+      state.players = s.players.map(p => {
+        if(typeof p === 'string') return { name: p, wc: state.wcPerPlayer, pts: 0 };
+        return { name: String(p.name || 'Jugador').slice(0,16), wc: Number.isFinite(p.wc) ? p.wc : 3, pts: Number.isFinite(p.pts) ? p.pts : 0 };
+      });
+    }
+    if(typeof s.turn === 'number') state.turn = s.turn;
+    if(s.mode && MODE_IDS.includes(s.mode)) state.mode = s.mode;
+    if([1,2,3].includes(s.intensity)) state.intensity = s.intensity;
+    if(['trago','prenda','puntos','ninguno'].includes(s.punishment)) state.punishment = s.punishment;
+    if([0,2,3].includes(s.wcPerPlayer)) state.wcPerPlayer = s.wcPerPlayer;
+    if(s.settings) state.settings = Object.assign(state.settings, s.settings);
+    if(s.used){ MODE_IDS.forEach(m => {
+      if(s.used[m]){
+        state.used[m].verdad = Array.isArray(s.used[m].verdad) ? s.used[m].verdad : [];
+        state.used[m].reto   = Array.isArray(s.used[m].reto)   ? s.used[m].reto   : [];
+      }
+    }); }
+    if(s.screen && ['start','players','modes','game'].includes(s.screen)) state.screen = s.screen;
+    if(state.turn >= state.players.length) state.turn = 0;
+  }catch(e){ console.warn('loadState', e); }
+}
+function saveState(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ══════════════════════════════════════════════════════════════════
+   AUDIO
+   ══════════════════════════════════════════════════════════════════ */
+let actx = null;
+function initAudio(){ if(actx) return; const C = window.AudioContext || window.webkitAudioContext; if(!C) return; try{ actx = new C(); }catch(e){ actx = null; } }
+function canSound(){ return state.settings.sound && actx; }
+function playDrumroll(d=1.0){ if(!state.settings.sound) return; initAudio(); if(!canSound()) return; const now = actx.currentTime; const hits = Math.max(8, Math.floor(d*22)); for(let i=0;i<hits;i++){ const t = now+(i/hits)*d; const o = actx.createOscillator(); const g = actx.createGain(); o.type='sine'; o.frequency.setValueAtTime(70+Math.random()*50,t); const v = 0.10*(0.4+(i/hits)*0.6); g.gain.setValueAtTime(v,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.06); o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t+0.07); } }
+function playApplause(){ if(!state.settings.sound) return; initAudio(); if(!canSound()) return; const now = actx.currentTime; const d = 0.9; const size = Math.floor(actx.sampleRate*d); const buf = actx.createBuffer(1,size,actx.sampleRate); const dd = buf.getChannelData(0); for(let i=0;i<size;i++) dd[i]=(Math.random()*2-1)*Math.pow(1-i/size,1.6); const src = actx.createBufferSource(); src.buffer = buf; const fl = actx.createBiquadFilter(); fl.type='bandpass'; fl.frequency.value=1800; fl.Q.value=0.7; const g = actx.createGain(); g.gain.setValueAtTime(0.30,now); g.gain.exponentialRampToValueAtTime(0.001,now+d); src.connect(fl); fl.connect(g); g.connect(actx.destination); src.start(now); }
+function playAlarm(){ if(!state.settings.sound) return; initAudio(); if(!canSound()) return; const now = actx.currentTime; for(let i=0;i<4;i++){ const t = now+i*0.22; const o = actx.createOscillator(); const g = actx.createGain(); o.type='square'; o.frequency.setValueAtTime(900,t); o.frequency.setValueAtTime(660,t+0.09); g.gain.setValueAtTime(0.08,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.18); o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t+0.2); } }
+function playWhoosh(){ if(!state.settings.sound) return; initAudio(); if(!canSound()) return; const now = actx.currentTime; const o = actx.createOscillator(); const g = actx.createGain(); o.type='sine'; o.frequency.setValueAtTime(180,now); o.frequency.exponentialRampToValueAtTime(750,now+0.28); g.gain.setValueAtTime(0.14,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.4); o.connect(g); g.connect(actx.destination); o.start(now); o.stop(now+0.4); }
+function playClick(){ if(!state.settings.sound) return; initAudio(); if(!canSound()) return; const now = actx.currentTime; const o = actx.createOscillator(); const g = actx.createGain(); o.type='triangle'; o.frequency.setValueAtTime(520,now); g.gain.setValueAtTime(0.10,now); g.gain.exponentialRampToValueAtTime(0.001,now+0.08); o.connect(g); g.connect(actx.destination); o.start(now); o.stop(now+0.09); }
+function playStartChime(){
+  if(!state.settings.sound) return;
+  initAudio(); if(!canSound()) return;
+  const now = actx.currentTime;
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((f,i) => {
+    const o = actx.createOscillator(); const g = actx.createGain();
+    o.type='triangle'; o.frequency.setValueAtTime(f, now + i*0.09);
+    g.gain.setValueAtTime(0.14, now + i*0.09);
+    g.gain.exponentialRampToValueAtTime(0.001, now + i*0.09 + 0.4);
+    o.connect(g); g.connect(actx.destination);
+    o.start(now + i*0.09); o.stop(now + i*0.09 + 0.42);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VIBRACIÓN + WAKE LOCK
+   ══════════════════════════════════════════════════════════════════ */
+function vibrate(p){ if(!state.settings.vibe) return; if(navigator.vibrate) navigator.vibrate(p); }
+let wakeLock = null;
+async function requestWakeLock(){ if(!state.settings.wake) return; if(!('wakeLock' in navigator)) return; try{ wakeLock = await navigator.wakeLock.request('screen'); }catch(e){} }
+function releaseWakeLock(){ try{ if(wakeLock){ wakeLock.release(); wakeLock = null; } }catch(e){} }
+document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'visible' && state.settings.wake) requestWakeLock(); });
+
+/* ══════════════════════════════════════════════════════════════════
+   UTILIDADES
+   ══════════════════════════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+let toastTimer;
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.style.opacity = '1'; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.style.opacity = '0'; }, 2300); }
+
+/* ══════════════════════════════════════════════════════════════════
+   NAVEGACIÓN
+   ══════════════════════════════════════════════════════════════════ */
+const SCREENS = {
+  start: $('screen-start'),
+  players: $('screen-players'),
+  modes: $('screen-modes'),
+  game: $('screen-game')
+};
+function showScreen(name){
+  state.screen = name;
+  saveState();
+  Object.values(SCREENS).forEach(s => s.classList.add('hidden'));
+  if(SCREENS[name]) SCREENS[name].classList.remove('hidden');
+  window.scrollTo({ top:0 });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   PANTALLA INICIO
+   ══════════════════════════════════════════════════════════════════ */
+$('btn-start').onclick = () => {
+  playStartChime();
+  vibrate([15, 30, 15, 30, 60]);
+  requestWakeLock();
+  showScreen('players');
+  renderPlayers();
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   JUGADORES
+   ══════════════════════════════════════════════════════════════════ */
+function renderPlayers(){
+  const list = $('players-list'); list.innerHTML = '';
+  state.players.forEach((p,i) => {
+    const row = document.createElement('div');
+    row.className = 'fade-up flex items-center gap-3 glass rounded-2xl px-3 py-2.5';
+    const av = document.createElement('div');
+    av.className = 'w-10 h-10 rounded-xl flex items-center justify-center font-black text-black shrink-0';
+    av.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+    av.textContent = p.name.trim().charAt(0).toUpperCase() || '?';
+    const lb = document.createElement('span'); lb.className = 'flex-1 font-semibold truncate'; lb.textContent = p.name;
+    const del = document.createElement('button');
+    del.className = 'press w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center text-base shrink-0';
+    del.textContent = '🗑️'; del.onclick = () => removePlayer(i);
+    row.append(av, lb, del); list.appendChild(row);
+  });
+  $('players-empty').style.display = state.players.length ? 'none' : 'block';
+  $('btn-to-modes').disabled = state.players.length < 2;
+  document.querySelectorAll('#punishment-chips .chip').forEach(c => c.classList.toggle('active', c.dataset.pun === state.punishment));
+  document.querySelectorAll('#wildcard-chips .chip').forEach(c => c.classList.toggle('active', Number(c.dataset.wc) === state.wcPerPlayer));
+}
+function addPlayer(){
+  const input = $('input-player');
+  const name = input.value.trim().replace(/\s+/g, ' ');
+  if(!name){ input.focus(); return; }
+  if(state.players.length >= 12){ toast('Máximo 12 jugadores'); return; }
+  if(state.players.some(p => p.name.toLowerCase() === name.toLowerCase())){ toast('Ese nombre ya existe'); return; }
+  state.players.push({ name, wc: state.wcPerPlayer, pts: 0 });
+  input.value = ''; input.focus(); saveState(); renderPlayers(); playClick(); vibrate(15);
+}
+function removePlayer(i){ state.players.splice(i,1); if(state.turn >= state.players.length) state.turn = 0; saveState(); renderPlayers(); vibrate(10); }
+$('btn-add').onclick = addPlayer;
+$('input-player').addEventListener('keydown', e => { if(e.key === 'Enter') addPlayer(); });
+$('btn-to-modes').onclick = () => { if(state.players.length < 2) return; renderModes(); showScreen('modes'); playClick(); requestWakeLock(); };
+document.querySelectorAll('#punishment-chips .chip').forEach(c => { c.onclick = () => { state.punishment = c.dataset.pun; saveState(); renderPlayers(); playClick(); }; });
+document.querySelectorAll('#wildcard-chips .chip').forEach(c => { c.onclick = () => { const v = Number(c.dataset.wc); state.wcPerPlayer = v; state.players.forEach(p => { p.wc = v; }); saveState(); renderPlayers(); playClick(); }; });
+
+/* ══════════════════════════════════════════════════════════════════
+   MODOS
+   ══════════════════════════════════════════════════════════════════ */
+function renderModes(){
+  const wrap = $('modes-list'); wrap.innerHTML = '';
+  MODES.forEach((m,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'press fade-up w-full text-left rounded-3xl p-5 relative overflow-hidden';
+    btn.style.background = m.grad; btn.style.animationDelay = (i*60)+'ms';
+    const ov = document.createElement('div'); ov.className = 'absolute inset-0';
+    ov.style.background = 'linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.45))';
+    const ct = document.createElement('div'); ct.className = 'relative flex items-center gap-4';
+    const em = document.createElement('div'); em.className = 'text-4xl drop-shadow-lg'; em.textContent = m.emoji;
+    const tx = document.createElement('div'); tx.className = 'flex-1 min-w-0';
+    const tr = document.createElement('div'); tr.className = 'flex items-center gap-2';
+    const h3 = document.createElement('h3'); h3.className = 'text-2xl font-black text-white drop-shadow'; h3.textContent = m.nombre;
+    const tg = document.createElement('span'); tg.className = 'text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-black/30 text-white/90'; tg.textContent = m.tag;
+    tr.append(h3, tg);
+    const p = document.createElement('p'); p.className = 'text-white/85 text-[13px] leading-snug mt-1'; p.textContent = m.desc;
+    tx.append(tr, p);
+    const ar = document.createElement('div'); ar.className = 'text-white/80 text-2xl font-black'; ar.textContent = '›';
+    ct.append(em, tx, ar); btn.append(ov, ct);
+    btn.onclick = () => {
+      playClick();
+      if(m.hasIntensity){ openIntensity(m); }
+      else { state.mode = m.id; state.turn = 0; saveState(); startGame(); }
+    };
+    wrap.appendChild(btn);
+  });
+}
+$('btn-back-players').onclick = () => { showScreen('players'); playClick(); };
+
+/* ══════════════════════════════════════════════════════════════════
+   INTENSIDAD
+   ══════════════════════════════════════════════════════════════════ */
+let pendingMode = null;
+function openIntensity(m){ pendingMode = m; $('intensity-mode-name').textContent = m.nombre; $('intensity-overlay').classList.remove('hidden'); }
+document.querySelectorAll('#intensity-overlay [data-int]').forEach(b => {
+  b.onclick = () => {
+    state.intensity = Number(b.dataset.int);
+    state.mode = pendingMode.id;
+    state.turn = 0;
+    saveState();
+    $('intensity-overlay').classList.add('hidden');
+    pendingMode = null; playClick(); startGame();
+  };
+});
+$('intensity-cancel').onclick = () => { $('intensity-overlay').classList.add('hidden'); pendingMode = null; playClick(); };
+
+/* ══════════════════════════════════════════════════════════════════
+   JUEGO
+   ══════════════════════════════════════════════════════════════════ */
+function startGame(){
+  if(!state.mode) return;
+  document.body.dataset.mode = state.mode;
+  const meta = MODES.find(m => m.id === state.mode);
+  const badge = $('mode-badge');
+  badge.textContent = meta.emoji + ' ' + meta.nombre + (meta.hasIntensity ? ' · N' + state.intensity : '');
+  badge.style.background = meta.grad; badge.style.color = '#fff'; badge.style.border = 'none';
+  playDrumroll(0.8);
+  renderTurn(); renderWildcards(); renderScoreboard(); showScreen('game'); requestWakeLock();
+}
+
+function renderTurn(){
+  const p = state.players[state.turn];
+  const el = $('current-player');
+  el.textContent = '¡' + (p ? p.name : '—') + '!';
+  el.classList.remove('pop-in'); void el.offsetWidth; el.classList.add('pop-in');
+  const dots = $('players-dots'); dots.innerHTML = '';
+  state.players.forEach((pl,i) => {
+    const d = document.createElement('div');
+    const active = i === state.turn;
+    d.className = 'w-9 h-9 rounded-full flex items-center justify-center text-xs font-black transition-all duration-300 ' + (active ? 'scale-110 text-black' : 'glass text-white/60');
+    if(active) d.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+    d.textContent = pl.name.trim().charAt(0).toUpperCase() || '?';
+    dots.appendChild(d);
+  });
+  updateDeckCounter(); renderWildcards();
+}
+
+function renderWildcards(){
+  const bar = $('wildcard-bar'); bar.innerHTML = '';
+  const p = state.players[state.turn]; if(!p) return;
+  const make = (label, icon, action, disabled) => {
+    const b = document.createElement('button');
+    b.className = 'wc press'; b.disabled = disabled;
+    b.innerHTML = `<span class="wc-icon">${icon}</span><span>${label}</span><span class="wc-count">x${p.wc}</span>`;
+    b.onclick = action; return b;
+  };
+  bar.appendChild(make('Pasar','⏭️', useSkip, p.wc <= 0));
+  bar.appendChild(make('Obligar','🎯', useForce, p.wc <= 0 || state.players.length < 2));
+  bar.appendChild(make('Cambiar','🔄', () => toast('Se usa desde la tarjeta'), true));
+}
+
+function renderScoreboard(){
+  const sb = $('scoreboard'); sb.innerHTML = '';
+  state.players.forEach((p,i) => {
+    const c = document.createElement('div');
+    c.className = 'shrink-0 px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 ' + (i === state.turn ? 'text-black' : 'glass text-white/70');
+    if(i === state.turn) c.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+    c.innerHTML = `<span>${p.name.slice(0,8)}</span><span class="opacity-70">${p.pts > 0 ? '+' : ''}${p.pts}</span>`;
+    sb.appendChild(c);
+  });
+}
+
+function updateDeckCounter(){
+  if(!state.mode) return;
+  const u = state.used[state.mode];
+  const total = (DATA[state.mode].verdades.length - u.verdad.length) + (DATA[state.mode].retos.length - u.reto.length);
+  const lvl = ['hot','sex'].includes(state.mode) ? ' · Nivel ' + state.intensity : '';
+  $('deck-counter').textContent = total + ' cartas disponibles' + lvl;
+}
+
+function poolKey(tipo){ return tipo === 'verdad' ? 'verdades' : 'retos'; }
+
+function pickPrompt(mode, tipo){
+  try{
+    if(!state.used[mode]) state.used[mode] = { verdad: [], reto: [] };
+    const key = poolKey(tipo);
+    const pool = DATA[mode][key];
+    if(!pool || !pool.length) throw new Error('Pool vacío: ' + mode + '.' + key);
+    const usedIdx = state.used[mode][tipo];
+    const hasLvl = ['hot','sex'].includes(mode);
+    const lvlArr = hasLvl ? LEVELS[mode][key] : null;
+    const isAllowed = i => !hasLvl || (lvlArr && lvlArr[i] <= state.intensity);
+
+    let available = [];
+    for(let i = 0; i < pool.length; i++) if(isAllowed(i) && !usedIdx.includes(i)) available.push(i);
+
+    let reset = false;
+    if(available.length === 0){
+      for(let i = usedIdx.length - 1; i >= 0; i--) if(!isAllowed(usedIdx[i])) usedIdx.splice(i,1);
+      for(let i = 0; i < pool.length; i++) if(isAllowed(i) && !usedIdx.includes(i)) available.push(i);
+      reset = true;
+    }
+    if(available.length === 0){
+      for(let i = 0; i < pool.length; i++) if(!usedIdx.includes(i)) available.push(i);
+      if(available.length === 0){
+        usedIdx.length = 0;
+        for(let i = 0; i < pool.length; i++) available.push(i);
+      }
+    }
+
+    const idx = available[Math.floor(Math.random() * available.length)];
+    usedIdx.push(idx);
+    saveState();
+
+    return {
+      texto: pool[idx],
+      reset,
+      restantes: pool.filter((_, i) => isAllowed(i) && !usedIdx.includes(i)).length
+    };
+  }catch(err){
+    console.error('pickPrompt error:', err);
+    return { texto: 'Error al cargar la carta. Toca de nuevo.', reset: false, restantes: 0 };
+  }
+}
+
+let currentType = null, currentText = null, timerInterval = null, timerRemaining = 0;
+
+function drawCard(tipo){
+  try{
+    if(!state.mode) return;
+    currentType = tipo;
+    const res = pickPrompt(state.mode, tipo);
+    currentText = res.texto;
+    const isVerdad = tipo === 'verdad';
+
+    const typeEl = $('card-type');
+    typeEl.textContent = isVerdad ? '💬 Verdad' : '🔥 Reto';
+    typeEl.style.background = isVerdad ? 'linear-gradient(135deg,#0ea5e9,#2563eb)' : 'linear-gradient(135deg,#f43f5e,#f97316)';
+    typeEl.style.color = '#fff';
+    $('card-glow').style.background = isVerdad ? 'radial-gradient(circle,#38bdf8,transparent 70%)' : 'radial-gradient(circle,#fb7185,transparent 70%)';
+
+    const textEl = $('card-text');
+    textEl.textContent = res.texto;
+    textEl.style.animation = 'none'; void textEl.offsetWidth;
+    textEl.style.animation = 'fadeUp .45s .1s cubic-bezier(.2,.8,.3,1) both';
+
+    const jugador = state.players[state.turn] ? state.players[state.turn].name : '';
+    $('card-hint').textContent = res.restantes > 0
+      ? 'Le toca a ' + jugador + ' · quedan ' + res.restantes + ' cartas'
+      : 'Mazo reiniciado para este tipo';
+    if(res.reset) toast('🔁 Mazo reiniciado');
+
+    const opposite = isVerdad ? 'Reto' : 'Verdad';
+    $('switch-label').textContent = 'Cambiar a ' + opposite;
+    const p = state.players[state.turn];
+    $('switch-count').textContent = p ? ('x' + p.wc) : '';
+    $('btn-switch-wc').disabled = !p || p.wc <= 0;
+
+    resetTimerUI();
+
+    const overlay = $('card-overlay');
+    overlay.classList.remove('hidden');
+    const card = $('card');
+    card.classList.remove('card-in'); void card.offsetWidth; card.classList.add('card-in');
+
+    updateDeckCounter();
+    playWhoosh();
+    vibrate([20,40,30]);
+  }catch(err){
+    console.error('drawCard error:', err);
+    toast('Error: ' + err.message);
+  }
+}
+
+function closeCard(){ $('card-overlay').classList.add('hidden'); stopTimer(); }
+
+$('btn-done').onclick = () => {
+  playApplause(); vibrate([15,30,15]);
+  const p = state.players[state.turn]; if(p) p.pts += 1;
+  saveState(); renderScoreboard();
+  toast('✅ ¡Bien hecho! +1 punto');
+  nextTurn();
+};
+$('btn-refuse').onclick = () => { playAlarm(); vibrate([60,40,60,40,60]); applyPunishment(); };
+
+function applyPunishment(){
+  const p = state.players[state.turn];
+  const pun = state.punishment;
+  let text = '', emoji = '😤';
+  if(pun === 'trago'){ text = (p?p.name+', ':'') + 'te toca beber un trago.'; emoji='🍺'; }
+  else if(pun === 'prenda'){ text = (p?p.name+', ':'') + 'quítate una prenda de ropa.'; emoji='👕'; }
+  else if(pun === 'puntos'){ if(p) p.pts -= 1; saveState(); renderScoreboard(); text = (p?p.name+', ':'') + 'pierdes 1 punto.'; emoji='➖'; }
+  else { text = 'Sin castigo. ¡La próxima no te salvas!'; emoji='🚫'; }
+  $('pun-emoji').textContent = emoji;
+  $('punishment-text').textContent = text;
+  $('punishment-overlay').classList.remove('hidden');
+}
+$('punishment-ok').onclick = () => { $('punishment-overlay').classList.add('hidden'); playClick(); nextTurn(); };
+
+$('btn-switch-wc').onclick = () => {
+  const p = state.players[state.turn];
+  if(!p || p.wc <= 0) return;
+  p.wc -= 1; saveState();
+  const newType = currentType === 'verdad' ? 'reto' : 'verdad';
+  toast('🔄 Comodín usado: cambias a ' + newType.toUpperCase());
+  playClick(); vibrate(20);
+  closeCard();
+  setTimeout(() => drawCard(newType), 120);
+};
+
+function nextTurn(){
+  closeCard();
+  if(state.players.length === 0) return;
+  state.turn = (state.turn + 1) % state.players.length;
+  saveState(); renderTurn(); renderScoreboard();
+  playDrumroll(0.6); vibrate(15);
+}
+
+$('btn-verdad').onclick = () => { playClick(); drawCard('verdad'); };
+$('btn-reto').onclick   = () => { playClick(); drawCard('reto'); };
+$('btn-back-modes').onclick = () => { closeCard(); renderModes(); showScreen('modes'); playClick(); };
+
+/* ══════════════════════════════════════════════════════════════════
+   REINICIO COMPLETO (mazos + comodines + turnos + puntajes)
+   ══════════════════════════════════════════════════════════════════ */
+$('btn-reset').onclick = () => {
+  if(!state.mode) return;
+  $('reset-overlay').classList.remove('hidden');
+  playClick();
+};
+$('reset-confirm').onclick = () => {
+  if(!state.mode) return;
+  initUsed();                                            // Reinicia mazos
+  state.turn = 0;                                        // Reinicia turnos
+  state.players.forEach(p => {                           // Reinicia comodines y puntajes
+    p.wc = state.wcPerPlayer;
+    p.pts = 0;
+  });
+  saveState();
+  document.body.dataset.mode = state.mode;
+  renderTurn(); renderScoreboard();
+  $('reset-overlay').classList.add('hidden');
+  toast('🔄 Todo reiniciado: mazos, comodines, turnos y puntajes');
+  playDrumroll(0.5);
+  vibrate([20, 40, 20]);
+};
+$('reset-cancel').onclick = () => {
+  $('reset-overlay').classList.add('hidden');
+  playClick();
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   COMODINES
+   ══════════════════════════════════════════════════════════════════ */
+function useSkip(){
+  const p = state.players[state.turn]; if(!p || p.wc <= 0) return;
+  p.wc -= 1; saveState();
+  toast('⏭️ ' + p.name + ' pasó su turno');
+  playClick(); vibrate(20); nextTurn();
+}
+function useForce(){
+  const p = state.players[state.turn]; if(!p || p.wc <= 0) return;
+  const list = $('force-list'); list.innerHTML = '';
+  state.players.forEach((target,i) => {
+    if(i === state.turn) return;
+    const b = document.createElement('button');
+    b.className = 'press w-full py-3 px-4 rounded-2xl bg-white/5 border border-white/10 font-semibold text-left flex items-center gap-3';
+    const av = document.createElement('div');
+    av.className = 'w-8 h-8 rounded-lg flex items-center justify-center font-black text-black text-sm';
+    av.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+    av.textContent = target.name.charAt(0).toUpperCase();
+    const nm = document.createElement('span'); nm.textContent = target.name;
+    b.append(av, nm);
+    b.onclick = () => {
+      p.wc -= 1; state.turn = i; saveState();
+      $('force-overlay').classList.add('hidden');
+      toast('🎯 ' + p.name + ' obligó a ' + target.name);
+      playDrumroll(0.5); vibrate(30);
+      renderTurn(); renderScoreboard();
+    };
+    list.appendChild(b);
+  });
+  $('force-overlay').classList.remove('hidden');
+}
+$('force-cancel').onclick = () => { $('force-overlay').classList.add('hidden'); playClick(); };
+
+/* ══════════════════════════════════════════════════════════════════
+   TIMER
+   ══════════════════════════════════════════════════════════════════ */
+function resetTimerUI(){
+  stopTimer();
+  $('timer-wrap').classList.add('hidden'); $('timer-wrap').classList.remove('flex');
+  $('timer-text').textContent = '60'; $('timer-ring').style.strokeDashoffset = '0';
+  $('btn-timer').textContent = '⏱️';
+}
+function stopTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
+$('btn-timer').onclick = () => {
+  if(timerInterval){
+    stopTimer(); $('btn-timer').textContent = '⏱️';
+    $('timer-wrap').classList.add('hidden'); $('timer-wrap').classList.remove('flex');
+    playClick(); return;
+  }
+  timerRemaining = 60;
+  $('timer-wrap').classList.remove('hidden'); $('timer-wrap').classList.add('flex');
+  $('btn-timer').textContent = '⏸'; updateTimerUI(); playClick();
+  timerInterval = setInterval(() => {
+    timerRemaining -= 1; updateTimerUI();
+    if(timerRemaining <= 0){
+      stopTimer(); playAlarm(); vibrate([80,40,80,40,80,40,120]);
+      $('timer-text').textContent = '0'; $('btn-timer').textContent = '⏱️';
+      toast('⏰ ¡Se acabó el tiempo!');
+    }
+  }, 1000);
+};
+function updateTimerUI(){
+  const total = 60, circ = 2*Math.PI*15;
+  const offset = circ * (1 - timerRemaining/total);
+  $('timer-ring').style.strokeDashoffset = offset;
+  $('timer-text').textContent = timerRemaining;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AJUSTES
+   ══════════════════════════════════════════════════════════════════ */
+$('btn-settings').onclick = () => {
+  $('set-sound').checked = state.settings.sound;
+  $('set-vibe').checked = state.settings.vibe;
+  $('set-wake').checked = state.settings.wake;
+  $('settings-overlay').classList.remove('hidden'); playClick();
+};
+$('settings-close').onclick = () => {
+  state.settings.sound = $('set-sound').checked;
+  state.settings.vibe = $('set-vibe').checked;
+  state.settings.wake = $('set-wake').checked;
+  saveState();
+  if(state.settings.wake) requestWakeLock(); else releaseWakeLock();
+  $('settings-overlay').classList.add('hidden'); playClick();
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   ARRANQUE
+   ══════════════════════════════════════════════════════════════════ */
+(function boot(){
+  loadState();
+  document.body.dataset.mode = state.mode || '';
+  renderPlayers();
+
+  // Reanudación inteligente: si hay partida en curso, retomar; si no, splash.
+  const inGame = state.mode && state.players.length >= 2 && state.screen === 'game';
+  const inModes = state.screen === 'modes' && state.players.length >= 2;
+
+  if(inGame){
+    startGame();
+  } else if(inModes){
+    renderModes();
+    showScreen('modes');
+  } else {
+    // Siempre mostrar splash al abrir la app
+    showScreen('start');
+  }
+})();
+</script>
+</body>
+</html>
